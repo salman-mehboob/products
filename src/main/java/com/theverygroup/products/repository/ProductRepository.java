@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,12 +36,12 @@ public class ProductRepository {
         }
     }
     public String deleteByProductId(String id){
-        List<Product> productCheck = (List<Product>) findByProductId(id);
-        if(productCheck.isEmpty()){
+        List<Product> p = (List<Product>) products.stream().filter(t -> t.getId().equals(id)).collect(Collectors.toList());
+        if(p.isEmpty()){
             return "No Product with this ID.";
         }
         else{
-
+            products.removeAll(p);
             return "Deleted Successfully.";
         }
     }

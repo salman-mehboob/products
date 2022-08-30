@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ProductRepositoryTests {
 
@@ -43,4 +45,24 @@ public class ProductRepositoryTests {
                 .build();
         assertThat(products).contains(expected);
     }
+
+    @Test
+    public void findByProductId() {
+        List<Product> expected = (List<Product>) productRepository.findByProductId("Flashgun");
+        assertNotNull(expected);
+    }
+
+    @Test
+    public void findByProductIdOrType() {
+        List<Product> expected = (List<Product>) productRepository.findByProductIdOrType("t","Electrical");
+        assertNotNull(expected);
+    }
+
+    @Test
+    public void deleteByProductId() {
+        productRepository.deleteByProductId("Flashgun");
+        List<Product> expected = (List<Product>) productRepository.findByProductId("Flashgun");
+        assertFalse(expected.size()>0);
+    }
+
 }
